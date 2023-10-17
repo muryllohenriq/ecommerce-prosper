@@ -4,6 +4,22 @@ import { StyledCard } from "@/components/Card.style";
 import Link from "next/link";
 import { useState } from "react";
 
+type person = {
+name: string;
+email: string;
+telephone: string;
+address: string;
+zip: string;
+number: string;
+complement: string;
+neighborhood: string;
+city: string;
+state: string;
+password: string;
+confirmPassword: string;
+privacyPolicy: string;
+}
+
 export default function Cadastro() {
   const [formData, setFormData] = useState({
     name: '',
@@ -21,7 +37,21 @@ export default function Cadastro() {
     privacyPolicy: ''
   })
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    telephone: '',
+    address: '',
+    zip: '',
+    number: '',
+    complement: '',
+    neighborhood: '',
+    city: '',
+    state: '',
+    password: '',
+    confirmPassword: '',
+    privacyPolicy: ''
+  })
 
   const handleChange = (e: any) => {
     const {name, value} = e.target;
@@ -32,7 +62,21 @@ export default function Cadastro() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    const validationErrors = {}
+    const validationErrors: person = {
+      name: "",
+      email: "",
+      telephone: "",
+      address: "",
+      zip: "",
+      number: "",
+      complement: "",
+      neighborhood: "",
+      city: "",
+      state: "",
+      password: "",
+      confirmPassword: "",
+      privacyPolicy: ""
+    }
 
     if(!formData.name.trim()) {
       validationErrors.name = "Nome é necessário"
