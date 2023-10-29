@@ -1,6 +1,6 @@
 'use client'
 
-import { StyledCard } from "@/components/Card.style";
+import { StyledCard } from "../../components/Card.style";
 import Link from "next/link";
 
 export default function Login() {
