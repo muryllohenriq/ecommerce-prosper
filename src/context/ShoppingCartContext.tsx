@@ -1,6 +1,5 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { ShoppingCart } from "../components/ShoppingCart";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 
 type ShoppingCartProviderProps = {
     children: ReactNode
@@ -29,11 +28,32 @@ export function useShoppingCart() {
 }
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     const [isOpen, setIsOpen] = useState(false)
-    const [cartItems, setCartItems] = useLocalStorage<CartItem[]>("shopping-cart", [])
+    const [products, setProducts] = useState([]);
+    const [cartItems, setCartItems] = useState<CartItem[]>([])
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch("https://dummyjson.com/products?limit=10");
+                const data = await response.json();
+                setProducts(data.products);
+                console.log(products);
+
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    if (products.length === 0) {
+        return <div>Loading...</div>;
+    }
 
     const cartQuantity = cartItems.reduce(
-        (quantity, item) =>
-            item.quantity + quantity, 0
+        (quantity, products) =>
+            products.quantity + quantity, 0
     )
 
     const openCart = () => setIsOpen(true)
@@ -89,7 +109,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
                 cartQuantity,
             }}>
             {children}
-            <ShoppingCart isOpen={isOpen}/>
+            <ShoppingCart isOpen={isOpen} />
         </ShoppingCartContext.Provider>
     )
 }
